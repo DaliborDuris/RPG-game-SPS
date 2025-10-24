@@ -1,0 +1,99 @@
+Edit rule: /bin/
+
+Edit rule: /obj/
+
+Edit rule: *.user
+
+Edit rule: *.useroptions
+
+Edit rule: *.suo
+
+VisualStudio
+
+Logs and other files
+
+*.log
+*.pfx
+*.vsix
+*.vsixmanifest
+*.webp
+
+Build results
+
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+build/
+Build/
+build/
+Build/
+
+NuGet packages
+
+*.nupkg
+
+The packages directory (if you use packages.config)
+
+packages/
+
+The project-level packages folder used by PackageReference
+
+.vs/
+.vs/VS/
+
+ReSharper / JetBrains files
+
+*.resharper
+.useroptions
+_ReSharper./
+*.[Dd]otSettings
+.idea/
+
+Rider
+
+*.user
+*.userprefs
+
+VS Code
+
+.vscode/
+
+Solution User Options file (VS 2022+ stores this in .vs/ folder)
+
+*.suo
+
+Test results
+
+TestResults/
+.TestStore/
+*.trx
+*.vsmdi
+*.coverage
+*.coveragexml
+
+Dependency directories
+
+node_modules/
+bower_components/
+
+Local data files
+
+*.sqlite
+*.db
+
+CSharp specific (Excluding .csproj and .sln)
+
+*.csproj.user
+*.sln.old
+*.bak
+
+Do not include auto-generated temporary project files
+
+*tmp.csproj
+
+Hide all output folders (common for C# apps)
+
+**/bin/
+**/obj/

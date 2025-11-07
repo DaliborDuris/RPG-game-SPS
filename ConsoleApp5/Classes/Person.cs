@@ -10,6 +10,7 @@ namespace ConsoleApp5.Classes
     {
         public string Name { get; set; }
         public int Health { get; set; }
+        public bool IsDefending { get; set; } = false;
 
         public Person(string name, int health)
         {
@@ -29,9 +30,28 @@ namespace ConsoleApp5.Classes
 
         public void TakeDamage(int damage)
         {
-            Health -= damage;
-            if (Health < 0) Health = 0;
-            Console.WriteLine($"{Name} utrpel {damage} poškodenia. Zostáva mu {Health} HP.");
+            int finalDamage = damage;
+
+            if (IsDefending)
+            {
+                // Zníženie poškodenia o 50%
+                finalDamage = (int)(damage * 0.5);
+                Console.WriteLine($"Obrana bola úspešná! {Name} znižuje poškodenie z {damage} na {finalDamage}.");
+                IsDefending = false; // Po obrane stav resetujeme
+            }
+
+            Health -= finalDamage;
+            if (Health < 0)
+            {
+                Health = 0;
+            }
+            Console.WriteLine($"{Name} utrpel {finalDamage} poškodenia. Zostáva mu {Health} HP.");
+        }
+
+        public void Defend()
+        {
+            IsDefending = true;
+            Console.WriteLine($"{Name} zaujal obranný postoj. Poškodenie v ďalšom kole bude znížené.");
         }
     }
 }

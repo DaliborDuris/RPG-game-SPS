@@ -12,6 +12,11 @@ namespace ConsoleApp5.Classes
         public int Health { get; set; }
         public bool IsDefending { get; set; } = false;
 
+        //pole pro statistiku
+        public int AttacksCount { get; set; } = 0;
+        public int TotalDamageDealt { get; set; } = 0;
+
+
         public Person(string name, int health)
         {
             Name = name;

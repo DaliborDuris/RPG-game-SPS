@@ -8,15 +8,14 @@ namespace ConsoleApp5
         static void Main(string[] args)
         {
 
-            List<int> nums = new List<int>();
-
             // === ZOZNAM POSTÁV ===
             List<Person> characters = new List<Person>()
             {
                 new Warrior("Thor", 120, 15),
                 new Warrior("Conan", 110, 18),
                 new Mage("Gandalf", 100, 50),
-                new Mage("Merlin", 90, 60)
+                new Mage("Merlin", 90, 60),
+                new Archer("Hudiny", 100, 5)
             };
 
             Console.WriteLine("=== Výber postáv pre boj ===\n");
@@ -76,6 +75,29 @@ namespace ConsoleApp5
             else
             {
                 Console.WriteLine("Obaja bojovníci padli!");
+            }
+
+
+            Console.WriteLine("\n=== Statistika souboje ===\n");
+
+            List<Person> fighters = new List<Person> { p1, p2 };
+            foreach (var fighter in fighters)
+            {
+                double avgDamage;
+
+                if (fighter.AttacksCount > 0)
+                {
+                    avgDamage = (double)fighter.TotalDamageDealt / fighter.AttacksCount;
+                }
+                else
+                {
+                    avgDamage = 0;
+                }
+
+                Console.WriteLine($"{fighter.Name}:");
+                Console.WriteLine($" - Počet útoků: {fighter.AttacksCount}");
+                Console.WriteLine($" - Celkové poškození: {fighter.TotalDamageDealt}");
+                Console.WriteLine($" - Průměrné poškození na útok: {avgDamage:F2}\n");
             }
 
             Console.ReadKey();

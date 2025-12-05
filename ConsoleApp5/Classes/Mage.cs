@@ -28,6 +28,10 @@ namespace ConsoleApp5.Classes
             Mana -= 10;
             Console.WriteLine($"{Name} zosiela ohnivú guľu na {target.Name} a spôsobí {damage} poškodenia!");
             target.TakeDamage(damage);
+
+            // Aktualizace statistiky
+            AttacksCount++;
+            TotalDamageDealt += damage;
         }
     }
 }

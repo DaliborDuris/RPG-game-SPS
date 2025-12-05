@@ -21,6 +21,9 @@ namespace ConsoleApp5.Classes
             int damage = Strength + new Random().Next(5, 15);
             Console.WriteLine($"{Name} máva mečom na {target.Name} a spôsobí {damage} poškodenia!");
             target.TakeDamage(damage);
+            // Aktualizace statistiky
+            AttacksCount++;
+            TotalDamageDealt += damage;
         }
     }
 }

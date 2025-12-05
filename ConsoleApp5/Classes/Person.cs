@@ -34,7 +34,6 @@ namespace ConsoleApp5.Classes
 
             if (IsDefending)
             {
-                // Zníženie poškodenia o 50%
                 finalDamage = (int)(damage * 0.5);
                 Console.WriteLine($"Obrana bola úspešná! {Name} znižuje poškodenie z {damage} na {finalDamage}.");
                 IsDefending = false; // Po obrane stav resetujeme

@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.IO; // <--- PRIDANÉ: Potrebné pre prácu so súbormi
+using System.Threading;
 using ConsoleApp5.Classes;
 
 namespace ConsoleApp5
@@ -7,8 +10,7 @@ namespace ConsoleApp5
     {
         static void Main(string[] args)
         {
-
-            // === ZOZNAM POSTÁV ===
+            // ... (tvoj kód pre zoznam postáv a výber zostáva rovnaký) ...
             List<Person> characters = new List<Person>()
             {
                 new Warrior("Thor", 120, 15),
@@ -20,16 +22,13 @@ namespace ConsoleApp5
 
             Console.WriteLine("=== Výber postáv pre boj ===\n");
 
-            // Výpis postáv
-          
-            
             int indexHelper = 1;
-            foreach (Person character in characters) {
-                Console.WriteLine(indexHelper + character.Name);
+            foreach (Person character in characters)
+            {
+                Console.WriteLine($"{indexHelper}. {character.Name}");
                 indexHelper++;
             }
 
-            // Výber postavy
             Console.Write("\nVyber prvú postavu: ");
             Person p1 = SelectCharacter(characters);
 
@@ -38,102 +37,75 @@ namespace ConsoleApp5
 
             Console.WriteLine($"=== {p1.Name} vs {p2.Name} ===\n");
 
+            // ... (tvoj kód pre cyklus súboja zostáva rovnaký) ...
             Random random = new Random();
             int round = 1;
 
             while (p1.IsAlive() && p2.IsAlive())
             {
                 Console.WriteLine($"\n--- Kolo {round} ---");
-
-                // P1
-                if (random.Next(0, 4) == 0)
-                    p1.Defend();
-                else
-                    p1.Attack(p2);
-
+                if (random.Next(0, 4) == 0) p1.Defend(); else p1.Attack(p2);
                 if (!p2.IsAlive()) break;
-
-                // P2
-                if (random.Next(0, 4) == 0)
-                    p2.Defend();
-                else
-                    p2.Attack(p1);
-
+                if (random.Next(0, 4) == 0) p2.Defend(); else p2.Attack(p1);
                 round++;
-                Thread.Sleep(800);
+                Thread.Sleep(500);
             }
 
-            Console.WriteLine("\n=== 🏁 Koniec boja ===");
-            if (p1.IsAlive())
+            // === PRÁCA SO SÚBOROM (LOGOVANIE VÝSLEDKU) ===
+            string cestaKSuboru = "vysledok_boja.txt";
+
+            // Pripravíme si text, ktorý chceme uložiť
+            string vitaz = p1.IsAlive() ? p1.Name : (p2.IsAlive() ? p2.Name : "Remíza");
+
+            // String Interpolation pre pekný formát
+            string zaznam = $"--- Súboj ({DateTime.Now}) ---\n" +
+                            $"Bojovníci: {p1.Name} vs {p2.Name}\n" +
+                            $"Víťaz: {vitaz}\n" +
+                            $"Počet kôl: {round}\n" +
+                            $"------------------------------\n\n";
+
+            try
             {
-                Console.WriteLine($"{p1.Name} vyhral so {p1.Health} HP!");
+                // Použijeme AppendAllText, aby sa staré výsledky nevymazali, ale pridali na koniec
+                File.AppendAllText(cestaKSuboru, zaznam);
+                Console.WriteLine($"\n[INFO] Výsledok boja bol uložený do: {Path.GetFullPath(cestaKSuboru)}");
             }
-            else if (p2.IsAlive())
+            catch (Exception ex)
             {
-                Console.WriteLine($"{p2.Name} vyhral so {p2.Health} HP!");
-            }
-            else
-            {
-                Console.WriteLine("Obaja bojovníci padli!");
+                Console.WriteLine("\n[CHYBA] Nepodarilo sa zapísať do súboru: " + ex.Message);
             }
 
-
+            // Výpis štatistík na konzolu (tvoj pôvodný kód)
             Console.WriteLine("\n=== Statistika souboje ===\n");
-
             List<Person> fighters = new List<Person> { p1, p2 };
             foreach (var fighter in fighters)
             {
-                double avgDamage;
-
-                if (fighter.AttacksCount > 0)
-                {
-                    avgDamage = (double)fighter.TotalDamageDealt / fighter.AttacksCount;
-                }
-                else
-                {
-                    avgDamage = 0;
-                }
-
+                double avgDamage = fighter.AttacksCount > 0 ? (double)fighter.TotalDamageDealt / fighter.AttacksCount : 0;
                 Console.WriteLine($"{fighter.Name}:");
                 Console.WriteLine($" - Počet útoků: {fighter.AttacksCount}");
                 Console.WriteLine($" - Celkové poškození: {fighter.TotalDamageDealt}");
                 Console.WriteLine($" - Průměrné poškození na útok: {avgDamage:F2}\n");
             }
 
+            Console.WriteLine("Stlač kláves pre ukončenie...");
             Console.ReadKey();
         }
 
-
         static Person SelectCharacter(List<Person> characters)
         {
+            // ... (tvoja metóda SelectCharacter zostáva nezmenená) ...
             int choice = 0;
             bool valid = false;
-
             while (!valid)
             {
                 Console.Write("Zadaj číslo postavy: ");
                 string input = Console.ReadLine();
-
-                if (int.TryParse(input, out choice))
-                {
-                    if (choice >= 1 && choice <= characters.Count)
-                    {
-                        valid = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Neplatné číslo! Skús znova.");
-                    }
-                }
+                if (int.TryParse(input, out choice) && choice >= 1 && choice <= characters.Count)
+                    valid = true;
                 else
-                {
-                    Console.WriteLine("Musíš zadať číslo!");
-                }
+                    Console.WriteLine("Neplatná voľba!");
             }
-
             return characters[choice - 1];
         }
-
-
     }
 }
